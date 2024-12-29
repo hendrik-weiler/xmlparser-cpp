@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.30)
-project(xmlparser)
+project(xmlparser VERSION 0.1.4)
 
 set(CMAKE_CXX_STANDARD 20)
 
@@ -18,3 +18,7 @@ add_library(xmlparser SHARED library.cpp
         lib/Node.cpp
         lib/Node.h
         includes/XMLParserLoader.h)
+
+set_target_properties(xmlparser PROPERTIES
+        VERSION ${PROJECT_VERSION}
+        SOVERSION ${PROJECT_VERSION_MAJOR})
