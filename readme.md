@@ -12,6 +12,7 @@ It was a excercise to learn more about shared library usage.
 - CDATA
 - Comments
 - Declaration
+- Manipulate and convert back to a xml string
 
 ## Usage
 
@@ -59,10 +60,15 @@ int main() {
 )");
 
     std::vector<Node*> myClassInstanceElements = myClassInstance->getElementsByName("html");
+/*
     for (Node* node : myClassInstanceElements) {
         //std::cout << "Node: " << node->name << std::endl;
         node->toString();
     }
+    */
+
+    // myClassInstanceElements[0]->toXML();
+    std::cout << myClassInstance->toXML() << std::endl;
 
     std::string version = myClassInstance->getDeclarationAttribute("xml", "version");
     std::string encoding = myClassInstance->getDeclarationAttribute("xml", "encoding");

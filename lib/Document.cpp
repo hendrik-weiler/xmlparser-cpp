@@ -26,3 +26,15 @@ std::string Document::getDeclarationAttribute(std::string declaration, std::stri
     }
     return "";
 }
+
+std::string Document::toXML() {
+    if (this->root != nullptr) {
+        std::string version = getDeclarationAttribute("xml", "version");
+        std::string encoding = getDeclarationAttribute("xml", "encoding");
+        if (!version.empty() && !encoding.empty()) {
+            return "<?xml version=\"" + version + "\" encoding=\"" + encoding + "\"?>" + this->root->toXML();
+        }
+        return this->root->toXML();
+    }
+    return "";
+}

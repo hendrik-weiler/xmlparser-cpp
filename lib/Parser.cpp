@@ -38,6 +38,7 @@ void Parser::node(std::vector<Node*> *children, Node* parent) {
                 node = new Node();
                 node->parent = parent;
                 if (parent == nullptr) {
+                    node->isRoot = true;
                     this->document->root = node;
                 } else {
                     children->push_back(node);
@@ -64,6 +65,7 @@ void Parser::node(std::vector<Node*> *children, Node* parent) {
 
             if (this->currentToken.type == Type::CDATA_START) {
                 eat(Type::CDATA_START);
+                node->isCDATA = true;
                 node->content = currentToken.value;
                 eat(Type::INNER_TEXT);
                 eat(Type::CDATA_END);

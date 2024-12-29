@@ -14,6 +14,10 @@ void XMLParser::destroy() {
     delete parser;
 }
 
+std::string XMLParser::toXML() {
+    return parser->document->toXML();
+}
+
 std::vector<Node *> XMLParser::getElementsByName(std::string tag) {
     if (parser->document->tagNodes.contains(tag)) {
         return parser->document->tagNodes[tag];

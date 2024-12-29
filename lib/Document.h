@@ -14,6 +14,7 @@ public:
     void addTagNode(std::string tag, Node* node);
     void addDeclarationAttribute(std::string declaration, std::string attribute, std::string value);
     std::string getDeclarationAttribute(std::string declaration, std::string attribute);
+    std::string toXML();
     Node *root;
 };
 

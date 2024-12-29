@@ -9,6 +9,7 @@ public:
     virtual ~XMLParser() = default;
     virtual void parse(std::string text);
     virtual void destroy();
+    virtual std::string toXML();
     virtual std::vector<Node*> getElementsByName(std::string tag);
     virtual std::string getDeclarationAttribute(std::string declaration, std::string attribute);
 };

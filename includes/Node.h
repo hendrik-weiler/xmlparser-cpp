@@ -10,12 +10,15 @@
 
 class Node {
 public:
+    bool isCDATA = false;
+    bool isRoot = false;
     Node* parent;
     std::vector<Node*> children;
     std::string id;
     std::string name;
     std::string content;
     std::unordered_map<std::string,std::string> attributes;
+    virtual std::string toXML();
     virtual void toString();
     virtual void destroy();
 };
