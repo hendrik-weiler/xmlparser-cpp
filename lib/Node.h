@@ -6,6 +6,7 @@
 #define NODE_H
 #include <unordered_map>
 #include <vector>
+#include <string>
 
 class Node {
 public:
