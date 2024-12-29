@@ -27,7 +27,8 @@ std::string Lexer::findIdentifier() {
         && isalnum(this->currentChar)
         || this->currentChar == '.'
         || this->currentChar == '-'
-        || this->currentChar == '@') {
+        || this->currentChar == '@'
+        || this->currentChar == ':') {
 
         if (pos >= text.size()) {
             break;
