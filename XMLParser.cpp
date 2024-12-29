@@ -20,3 +20,7 @@ std::vector<Node *> XMLParser::getElementsByName(std::string tag) {
     }
     return std::vector<Node *>(0);
 }
+
+std::string XMLParser::getDeclarationAttribute(std::string declaration, std::string attribute) {
+    return parser->document->getDeclarationAttribute(declaration, attribute);
+}

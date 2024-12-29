@@ -31,7 +31,7 @@ bool Parser::inList(std::vector<Type> list, Token token) {
 void Parser::node(std::vector<Node*> *children, Node* parent) {
     Node* node = nullptr;
 
-    while (inList({Type::OPEN_TAG}, this->currentToken)) {
+    while (inList({Type::OPEN_TAG, Type::COMMENT_START}, this->currentToken)) {
         if (this->currentToken.type == Type::OPEN_TAG) {
             eat(Type::OPEN_TAG);
             if (this->currentToken.type == Type::IDENTIFIER) {
@@ -61,16 +61,26 @@ void Parser::node(std::vector<Node*> *children, Node* parent) {
                 return;
             }
             eat(Type::CLOSE_TAG);
-            if (this->currentToken.type == Type::INNER_TEXT) {
+
+            if (this->currentToken.type == Type::CDATA_START) {
+                eat(Type::CDATA_START);
                 node->content = currentToken.value;
                 eat(Type::INNER_TEXT);
-            }
+                eat(Type::CDATA_END);
+            } else {
 
-            this->node(&node->children, node);
+                if (this->currentToken.type == Type::INNER_TEXT) {
+                    node->content = currentToken.value;
+                    eat(Type::INNER_TEXT);
+                }
 
-            if (this->currentToken.type == Type::INNER_TEXT) {
-                node->content += currentToken.value;
-                eat(Type::INNER_TEXT);
+                this->node(&node->children, node);
+
+                if (this->currentToken.type == Type::INNER_TEXT) {
+                    node->content += currentToken.value;
+                    eat(Type::INNER_TEXT);
+                }
+
             }
 
             if (this->currentToken.type == Type::SLASH_OPEN_TAG) {
@@ -79,14 +89,35 @@ void Parser::node(std::vector<Node*> *children, Node* parent) {
                 eat(Type::CLOSE_TAG);
             }
         }
+        if (this->currentToken.type == Type::COMMENT_START) {
+            eat(Type::COMMENT_START);
+            while (this->currentToken.type != Type::COMMENT_END) {
+                eat(this->currentToken.type);
+            }
+            eat(Type::COMMENT_END);
+        }
     }
 }
 
 void Parser::parse() {
 
-    while (inList({Type::OPEN_TAG}, this->currentToken)) {
+    while (inList({Type::OPEN_TAG, Type::DECLARATION_START}, this->currentToken)) {
         if (this->currentToken.type == Type::OPEN_TAG) {
             this->node(nullptr,nullptr);
+        }
+        if (this->currentToken.type == Type::DECLARATION_START) {
+            eat(Type::DECLARATION_START);
+            currentDeclaration = currentToken.value;
+            eat(Type::IDENTIFIER);
+            while (inList({Type::IDENTIFIER}, this->currentToken)) {
+                std::string name = currentToken.value;
+                eat(Type::IDENTIFIER);
+                eat(Type::EQUAL);
+                std::string value = currentToken.value;
+                eat(Type::ATTRIBUTE_VALUE);
+                document->addDeclarationAttribute(currentDeclaration, name, value);
+            }
+            eat(Type::DECLARATION_END);
         }
     }
 

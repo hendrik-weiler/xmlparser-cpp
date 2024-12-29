@@ -17,6 +17,9 @@ private:
     int linePos;
     char currentChar;
     bool inTag = false;
+    bool inDeclaration = false;
+    bool inComment = false;
+    bool inCDATA = false;
 protected:
     void addPos();
 
@@ -28,12 +31,18 @@ protected:
 
     std::string findInnerText();
 
+    std::string findTextByEnd(std::string endSequence);
+
 public:
     Lexer(std::string text) : text(text), pos(0), line(1), linePos(0) {}
     Token getNextToken();
 
     void error();
     char peek(int num = 1);
+
+    bool findKeyword(std::string keyword, int num = 1) const;
+
+    void advance(int i);
 
     void sum();
 };

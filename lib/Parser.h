@@ -13,6 +13,7 @@ private:
     Lexer* lexer;
     Token currentToken{Type::END_OF_FILE, "EOF"};
     Node* currentNode;
+    std::string currentDeclaration;
 public:
     Document* document;
     Parser(std::string text);

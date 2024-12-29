@@ -69,6 +69,20 @@ std::string Lexer::findInnerText() {
     return value;
 }
 
+std::string Lexer::findTextByEnd(std::string endSequence) {
+    std::string value = "";
+    while (!findKeyword(endSequence, endSequence.size())) {
+
+        if (pos >= text.size()) {
+            break;
+        }
+
+        value += this->currentChar;
+        addPos();
+    }
+    return value;
+}
+
 Token Lexer::getNextToken() {
 
     if (pos >= text.size()) {
@@ -86,6 +100,48 @@ Token Lexer::getNextToken() {
     if (this->currentChar == ' ' || this->currentChar == '\t') {
         addPos();
         return getNextToken();
+    }
+
+    if (findKeyword("]]>", 3)) {
+        advance(3);
+        inCDATA = false;
+        return Token(Type::CDATA_END, "]]>");
+    }
+
+    if (inCDATA) {
+        return Token(Type::INNER_TEXT, findTextByEnd("]]>"));
+    }
+
+    if (findKeyword("<![CDATA[", 9)) {
+        advance(9);
+        inCDATA = true;
+        return Token(Type::CDATA_START, "<![CDATA[");
+    }
+
+    if (findKeyword("-->", 3)) {
+        advance(3);
+        inComment = false;
+        return Token(Type::COMMENT_END, "-->");
+    }
+
+    if (findKeyword("<!--", 4)) {
+        advance(4);
+        inComment = true;
+        return Token(Type::COMMENT_START, "<!--");
+    }
+
+    if (this->currentChar == '?' && peek() == '>') {
+        addPos();
+        addPos();
+        inDeclaration = false;
+        return Token(Type::DECLARATION_END, "?>");
+    }
+
+    if (this->currentChar == '<' && peek() == '?') {
+        addPos();
+        addPos();
+        inDeclaration = true;
+        return Token(Type::DECLARATION_START, "<?");
     }
 
     if (this->currentChar == '<') {
@@ -129,11 +185,15 @@ Token Lexer::getNextToken() {
         return Token(Type::ATTRIBUTE_VALUE, findValue());
     }
 
-    if (!inTag) {
-        return Token(Type::INNER_TEXT, findInnerText());
+    if (inComment) {
+        return Token(Type::INNER_TEXT, findTextByEnd("-->"));
     } else {
-        if (isIdentifier(this->currentChar)) {
-            return Token(Type::IDENTIFIER, findIdentifier());
+        if (!inTag && !inDeclaration) {
+            return Token(Type::INNER_TEXT, findInnerText());
+        } else {
+            if (isIdentifier(this->currentChar)) {
+                return Token(Type::IDENTIFIER, findIdentifier());
+            }
         }
     }
 
@@ -152,6 +212,18 @@ char Lexer::peek(int num) {
         return '\0';
     }
     return text[thePos];
+}
+
+bool Lexer::findKeyword(std::string keyword, int num) const {
+    std::string value = "";
+    for(int i = 0; i < num; i++) {
+        value += text[pos + i];
+    }
+    return value == keyword;
+}
+
+void Lexer::advance(int i) {
+    for (int j = 0; j < i; ++j) addPos();
 }
 
 void Lexer::sum() {
