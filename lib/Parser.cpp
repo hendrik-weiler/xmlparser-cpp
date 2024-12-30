@@ -5,6 +5,7 @@
 #include "Parser.h"
 
 #include <iostream>
+#include <algorithm>
 #include <ostream>
 
 Parser::Parser(std::string text) {
