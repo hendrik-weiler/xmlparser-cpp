@@ -2,7 +2,7 @@
 
 #include "../Parser.h"
 
-void XMLParser::parse(std::string text) {
+void xmlparser::XMLParser::parse(std::string text) {
     //Lexer lexer(text);
     //lexer.sum();
     parser = new Parser(text);
@@ -10,21 +10,21 @@ void XMLParser::parse(std::string text) {
     //parser->document->root->toString();
 }
 
-void XMLParser::destroy() {
+void xmlparser::XMLParser::destroy() {
     delete parser;
 }
 
-std::string XMLParser::toXML() {
+std::string xmlparser::XMLParser::toXML() {
     return parser->document->toXML();
 }
 
-std::vector<Node *> XMLParser::getElementsByName(std::string tag) {
+std::vector<xmlparser::Node *> xmlparser::XMLParser::getElementsByName(std::string tag) {
     if (parser->document->tagNodes.contains(tag)) {
         return parser->document->tagNodes[tag];
     }
-    return std::vector<Node *>(0);
+    return std::vector<xmlparser::Node *>(0);
 }
 
-std::string XMLParser::getDeclarationAttribute(std::string declaration, std::string attribute) {
+std::string xmlparser::XMLParser::getDeclarationAttribute(std::string declaration, std::string attribute) {
     return parser->document->getDeclarationAttribute(declaration, attribute);
 }

@@ -8,35 +8,35 @@
 #include <algorithm>
 #include <ostream>
 
-Parser::Parser(std::string text) {
+xmlparser::Parser::Parser(std::string text) {
     this->lexer = new Lexer(text);
     this->document = new Document();
     this->currentToken = lexer->getNextToken();
     this->currentNode = nullptr;
 }
 
-Parser::~Parser() {
+xmlparser::Parser::~Parser() {
     delete this->lexer;
 
-    for (Node* node : this->document->root->children) {
+    for (xmlparser::Node* node : this->document->root->children) {
         node->destroy();
     }
 
     delete this->document;
 }
 
-bool Parser::inList(std::vector<Type> list, Token token) {
+bool xmlparser::Parser::inList(std::vector<Type> list, Token token) {
     return std::find(list.begin(), list.end(), token.type) != list.end();
 }
 
-void Parser::node(std::vector<Node*> *children, Node* parent) {
-    Node* node = nullptr;
+void xmlparser::Parser::node(std::vector<xmlparser::Node*> *children, xmlparser::Node* parent) {
+    xmlparser::Node* node = nullptr;
 
     while (inList({Type::OPEN_TAG, Type::COMMENT_START}, this->currentToken)) {
         if (this->currentToken.type == Type::OPEN_TAG) {
             eat(Type::OPEN_TAG);
             if (this->currentToken.type == Type::IDENTIFIER) {
-                node = new Node();
+                node = new xmlparser::Node();
                 node->parent = parent;
                 if (parent == nullptr) {
                     node->isRoot = true;
@@ -102,7 +102,7 @@ void Parser::node(std::vector<Node*> *children, Node* parent) {
     }
 }
 
-void Parser::parse() {
+void xmlparser::Parser::parse() {
 
     while (inList({Type::OPEN_TAG, Type::DECLARATION_START}, this->currentToken)) {
         if (this->currentToken.type == Type::OPEN_TAG) {
@@ -126,7 +126,7 @@ void Parser::parse() {
 
 }
 
-void Parser::eat(Type type) {
+void xmlparser::Parser::eat(Type type) {
     //std::cout << "trying to eat " << type << " current: " << this->currentToken.type << ",content:" << this->currentToken.value << std::endl;
     if (this->currentToken.type == type) {
         this->currentToken = lexer->getNextToken();

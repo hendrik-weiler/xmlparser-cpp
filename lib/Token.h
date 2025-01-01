@@ -8,15 +8,13 @@
 
 #include "Type.h"
 
-
-class Token {
-public:
-    Type type;
-    std::string value;
-    Token(Type type, std::string value) : type(type), value(value) {}
-    void toString();
-};
-
-
-
+namespace xmlparser {
+    class Token {
+    public:
+        Type type;
+        std::string value;
+        Token(Type type, std::string value) : type(type), value(value) {}
+        void toString();
+    };
+}
 #endif //TOKEN_H

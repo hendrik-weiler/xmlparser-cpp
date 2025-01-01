@@ -7,7 +7,7 @@
 #include <iostream>
 #include <ostream>
 
-std::string Node::toXML() {
+std::string xmlparser::Node::toXML() {
     std::string xml = "<" + name;
     for (auto const& x : attributes) {
         xml += " " + x.first + "=\"" + x.second + "\"";
@@ -31,7 +31,7 @@ std::string Node::toXML() {
     return xml;
 }
 
-void Node::toString() {
+void xmlparser::Node::toString() {
     std::cout << "Node: "
     << name
     << ", Children: "
@@ -53,7 +53,7 @@ void Node::toString() {
     }
 }
 
-void Node::destroy() {
+void xmlparser::Node::destroy() {
     for (Node* child : children) {
         child->destroy();
     }

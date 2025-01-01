@@ -6,19 +6,19 @@
 
 #include <iostream>
 
-void Lexer::addPos() {
+void xmlparser::Lexer::addPos() {
     pos += 1;
     linePos += 1;
     this->currentChar = text[pos];
 }
 
-bool Lexer::isIdentifier(char c) {
+bool xmlparser::Lexer::isIdentifier(char c) {
     return isalnum(c)
         || c == '.'
         || c == '@';
 }
 
-std::string Lexer::findIdentifier() {
+std::string xmlparser::Lexer::findIdentifier() {
     std::string identifier = "";
     while (this->currentChar != ' '
         && this->currentChar != '\n'
@@ -40,7 +40,7 @@ std::string Lexer::findIdentifier() {
     return identifier;
 }
 
-std::string Lexer::findValue() {
+std::string xmlparser::Lexer::findValue() {
     std::string value = "";
     while (this->currentChar != '"'
         && this->currentChar != '\'') {
@@ -56,7 +56,7 @@ std::string Lexer::findValue() {
     return value;
 }
 
-std::string Lexer::findInnerText() {
+std::string xmlparser::Lexer::findInnerText() {
     std::string value = "";
     while (this->currentChar != '<') {
 
@@ -70,7 +70,7 @@ std::string Lexer::findInnerText() {
     return value;
 }
 
-std::string Lexer::findTextByEnd(std::string endSequence) {
+std::string xmlparser::Lexer::findTextByEnd(std::string endSequence) {
     std::string value = "";
     while (!findKeyword(endSequence, endSequence.size())) {
 
@@ -84,7 +84,7 @@ std::string Lexer::findTextByEnd(std::string endSequence) {
     return value;
 }
 
-Token Lexer::getNextToken() {
+xmlparser::Token xmlparser::Lexer::getNextToken() {
 
     if (pos >= text.size()) {
         return Token(Type::END_OF_FILE, "EOF");
@@ -203,11 +203,11 @@ Token Lexer::getNextToken() {
     return Token(Type::END_OF_FILE, "EOF");
 }
 
-void Lexer::error() {
+void xmlparser::Lexer::error() {
     std::cout << "Unexpected character: " << this->currentChar << ", pos: " << linePos << ", line: " << line << std::endl;
 }
 
-char Lexer::peek(int num) {
+char xmlparser::Lexer::peek(int num) {
     int thePos = pos + num;
     if (thePos > text.size()) {
         return '\0';
@@ -215,7 +215,7 @@ char Lexer::peek(int num) {
     return text[thePos];
 }
 
-bool Lexer::findKeyword(std::string keyword, int num) const {
+bool xmlparser::Lexer::findKeyword(std::string keyword, int num) const {
     std::string value = "";
     for(int i = 0; i < num; i++) {
         value += text[pos + i];
@@ -223,11 +223,11 @@ bool Lexer::findKeyword(std::string keyword, int num) const {
     return value == keyword;
 }
 
-void Lexer::advance(int i) {
+void xmlparser::Lexer::advance(int i) {
     for (int j = 0; j < i; ++j) addPos();
 }
 
-void Lexer::sum() {
+void xmlparser::Lexer::sum() {
 
     Token token = getNextToken();
     token.toString();

@@ -8,23 +8,25 @@
 #include "Lexer.h"
 
 
-class Parser {
-private:
-    Lexer* lexer;
-    Token currentToken{Type::END_OF_FILE, "EOF"};
-    Node* currentNode;
-    std::string currentDeclaration;
-public:
-    Document* document;
-    Parser(std::string text);
-    ~Parser();
-    bool inList(std::vector<Type> list, Token token);
+namespace xmlparser {
+    class Parser {
+    private:
+        Lexer* lexer;
+        Token currentToken{Type::END_OF_FILE, "EOF"};
+        xmlparser::Node* currentNode;
+        std::string currentDeclaration;
+    public:
+        Document* document;
+        Parser(std::string text);
+        ~Parser();
+        bool inList(std::vector<Type> list, Token token);
 
-    void node(std::vector<Node *> *children, Node *parent);
+        void node(std::vector<xmlparser::Node *> *children, xmlparser::Node *parent);
 
-    void parse();
-    void eat(Type type);
-};
+        void parse();
+        void eat(Type type);
+    };
+}
 
 
 

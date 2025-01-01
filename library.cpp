@@ -2,10 +2,10 @@
 
 #include "lib/includes/XMLParser.h"
 
-extern "C" EXPORT XMLParser* create() {
-    return new XMLParser();
+extern "C" EXPORT xmlparser::XMLParser* create() {
+    return new xmlparser::XMLParser();
 }
 
-extern "C" EXPORT void destroy(XMLParser* instance) {
+extern "C" EXPORT void destroy(xmlparser::XMLParser* instance) {
     delete instance;
 }

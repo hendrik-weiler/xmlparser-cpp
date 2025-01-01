@@ -6,7 +6,7 @@
 
 #include <iostream>
 
-void Token::toString() {
+void xmlparser::Token::toString() {
 
     std::cout << "Token: " << type << ", Value: " << value << std::endl;
 
