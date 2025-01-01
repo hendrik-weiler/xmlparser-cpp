@@ -68,6 +68,7 @@ public:
             FreeLibrary(handle);
             return;
         }
+        destroy(instance);
         FreeLibrary(handle);
 #else
         typedef void (*destroy_t)(XMLParser*);

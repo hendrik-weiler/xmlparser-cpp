@@ -1,6 +1,6 @@
 #include "XMLParser.h"
 
-#include "lib/Parser.h"
+#include "../Parser.h"
 
 void XMLParser::parse(std::string text) {
     //Lexer lexer(text);

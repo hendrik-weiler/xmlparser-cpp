@@ -4,7 +4,7 @@
 
 #ifndef DOCUMENT_H
 #define DOCUMENT_H
-#include "Node.h"
+#include "includes/Node.h"
 
 
 class Document {

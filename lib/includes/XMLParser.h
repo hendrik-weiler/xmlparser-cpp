@@ -2,9 +2,9 @@
 #define MYCLASS_H
 
 #include <iostream>
-#include "library.h"
-#include "lib/Node.h"
-#include "lib/Parser.h"
+#include "../../library.h"
+#include "Node.h"
+#include "../Parser.h"
 
 class EXPORT XMLParser {
 private:
