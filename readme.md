@@ -2,9 +2,9 @@
 
 ## Description
 
-This is a simple XML parser written in C++ as shared library for loading on demand.
+This is a simple XML parser written in C++ as static library.
 Its possible that the parser is not complete and may not work for all XML files.
-It was a excercise to learn more about shared library usage.
+It was a excercise to learn more about shared libraries but static seems to be recommended.
 
 ### Features
 - Tags
@@ -31,44 +31,37 @@ Example code
 ```c++
 #include <iostream>
 #include "XMLParser.h"
-#include "XMLParserLoader.h"
 
 int main() {
     // Load the dynamic library
-    XMLParserLoader loader("/Volumes/Expansion/xmlparser-cpp/cmake-build-debug/libxmlparser.dylib");
-    XMLParser* myClassInstance = loader.create();
+    auto* myClassInstance = new xmlparser::XMLParser();
 
     myClassInstance->parse(R"(
 <?xml version="1.0" encoding="UTF-8"?>
-<html lang="en">
-<head>
-    <!-- Meta Tags -->
-    <meta charset="UTF-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <link rel="icon" href="favicon.ico" type="image/x-icon"/> <!-- test -->
-    <title>Titles</title>
-</head>
-<body>
-    <dialog id="pi"><img src="progress-indicator.gif" /></dialog>
-    <div id="layouts"></div>
-    <div id="templates"></div>
-    <div id="dialogs"></div>
-    <div><![CDATA[<div id="dialogs"></div>]]></div>
-</body>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+<f:view>
+    <h:outputLabel value="Hello, world"/>
+</f:view>
 </html>
 
 )");
 
-    std::vector<Node*> myClassInstanceElements = myClassInstance->getElementsByName("html");
-/*
-    for (Node* node : myClassInstanceElements) {
-        //std::cout << "Node: " << node->name << std::endl;
-        node->toString();
-    }
-    */
+    std::vector<xmlparser::Node*> myClassInstanceElements = myClassInstance->getElementsByName("html");
 
-    // myClassInstanceElements[0]->toXML();
-    std::cout << myClassInstance->toXML() << std::endl;
+    for (xmlparser::Node* node : myClassInstanceElements) {
+        //std::cout << "Node: " << node->name << std::endl;
+
+        node->attributes["id"] = "test";
+        auto* child = new xmlparser::Node();
+        child->name = "child";
+        node->children.push_back(child);
+        std::cout << node->toXML() << std::endl;
+    }
+
+    //std::cout << myClassInstance->toXML() << std::endl;
 
     std::string version = myClassInstance->getDeclarationAttribute("xml", "version");
     std::string encoding = myClassInstance->getDeclarationAttribute("xml", "encoding");
@@ -76,7 +69,7 @@ int main() {
     std::cout << "Version: " << version << std::endl;
     std::cout << "Encoding: " << encoding << std::endl;
 
-    loader.destroy(myClassInstance);
+    myClassInstance->destroy();
 
     return 0;
 }

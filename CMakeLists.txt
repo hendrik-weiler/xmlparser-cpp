@@ -3,7 +3,7 @@ project(xmlparser VERSION 0.1.4)
 
 set(CMAKE_CXX_STANDARD 20)
 
-add_library(xmlparser SHARED library.cpp
+add_library(xmlparser STATIC library.cpp
         lib/includes/XMLParser.cpp
         lib/includes/XMLParser.h
         lib/Token.cpp
