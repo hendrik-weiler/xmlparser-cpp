@@ -2,12 +2,11 @@
 #define MYCLASS_H
 
 #include <iostream>
-#include "../../library.h"
 #include "Node.h"
 #include "../Parser.h"
 
 namespace xmlparser {
-    class EXPORT XMLParser {
+    class XMLParser {
     private:
         Parser* parser = nullptr;
     public:

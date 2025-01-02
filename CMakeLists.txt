@@ -3,7 +3,7 @@ project(xmlparser VERSION 0.1.4)
 
 set(CMAKE_CXX_STANDARD 20)
 
-add_library(xmlparser STATIC library.cpp
+add_library(xmlparser STATIC
         lib/includes/XMLParser.cpp
         lib/includes/XMLParser.h
         lib/Token.cpp
@@ -16,9 +16,4 @@ add_library(xmlparser STATIC library.cpp
         lib/Document.cpp
         lib/Document.h
         lib/includes/Node.cpp
-        lib/includes/Node.h
-        lib/includes/XMLParserLoader.h)
-
-set_target_properties(xmlparser PROPERTIES
-        VERSION ${PROJECT_VERSION}
-        SOVERSION ${PROJECT_VERSION_MAJOR})
+        lib/includes/Node.h)

@@ -16,18 +16,21 @@ It was a excercise to learn more about shared libraries but static seems to be r
 
 ## Usage
 
-In CMakeLists.txt add the includes
+Example CMakeLists.txt for the main program
 ```cmake
-include_directories(/Users/hendrikweiler/CLionProjects/xmlparser/includes)
+cmake_minimum_required(VERSION 3.30)
+project(xmlparserrunner CXX)
+
+set(CMAKE_CXX_STANDARD 20)
+
+include_directories(/Volumes/Expansion/xmlparser-cpp/lib/includes)
+
+add_executable(xmlparserrunner main.cpp)
+
+target_link_libraries(xmlparserrunner /Volumes/Expansion/xmlparser-cpp/cmake-build-debug/libxmlparser.a)
 ```
 
-In your code include the header files
-```c++
-#include "XMLParser.h"
-#include "XMLParserLoader.h"
-```
-
-Example code
+Example code for usage
 ```c++
 #include <iostream>
 #include "XMLParser.h"
