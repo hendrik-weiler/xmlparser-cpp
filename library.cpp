@@ -9,3 +9,7 @@ extern "C" EXPORT XMLParser* create() {
 extern "C" EXPORT void destroy(XMLParser* instance) {
     delete instance;
 }
+
+extern "C" EXPORT Node* createNode() {
+    return new Node;
+}

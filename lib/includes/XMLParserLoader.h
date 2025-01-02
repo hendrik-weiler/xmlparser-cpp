@@ -6,6 +6,8 @@
 #define XMLPARSERLOADER_H
 #include <iostream>
 #include <string>
+
+#include "Node.h"
 #ifdef _WIN32
 #include <windows.h>
 #else
@@ -81,6 +83,29 @@ public:
         }
         destroy(instance);
         dlclose(handle);
+#endif
+
+    }
+    Node* createNode() {
+#ifdef _WIN32
+        typedef Node* (*createNode_t)();
+        createNode_t createNode = (createNode_t) GetProcAddress(handle, "createNode");
+        if (createNode == nullptr) {
+            std::cerr << "Cannot load symbol 'createNode': " << '\n';
+            FreeLibrary(handle);
+            return nullptr_t;
+        }
+        return createNode();
+#else
+        typedef Node* (*createNode_t)();
+        createNode_t createNode = (createNode_t) dlsym(handle, "createNode");
+        const char* dlsym_error = dlerror();
+        if (dlsym_error) {
+            std::cerr << "Cannot load symbol 'createNode': " << dlsym_error << '\n';
+            dlclose(handle);
+            return nullptr;
+        }
+        return createNode();
 #endif
 
     }
