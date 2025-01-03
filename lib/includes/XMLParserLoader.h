@@ -93,7 +93,7 @@ public:
         if (createNode == nullptr) {
             std::cerr << "Cannot load symbol 'createNode': " << '\n';
             FreeLibrary(handle);
-            return nullptr_t;
+            return nullptr;
         }
         return createNode();
 #else
