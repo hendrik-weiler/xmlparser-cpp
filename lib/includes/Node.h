@@ -6,9 +6,10 @@
 #define NODE_H
 #include <unordered_map>
 #include <vector>
+#include "../../library.h"
 #include <string>
 
-class Node {
+class EXPORT Node {
 public:
     bool isCDATA = false;
     bool isRoot = false;
